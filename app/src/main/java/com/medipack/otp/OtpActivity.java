@@ -20,7 +20,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
-public class OtpActivity extends AppCompatActivity {
+public class  OtpActivity extends AppCompatActivity {
 
 
     private String verificationid;

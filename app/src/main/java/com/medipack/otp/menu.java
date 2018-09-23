@@ -13,6 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class menu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -20,8 +23,17 @@ public class menu extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        FirebaseDatabase database;
+        DatabaseReference category;
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Init Firebase
+        database = FirebaseDatabase.getInstance();
+        category = database.getReference("category");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +53,9 @@ public class menu extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+    // Load menu
+
 
     @Override
     public void onBackPressed() {
@@ -80,18 +95,20 @@ public class menu extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        {
+            if (id == R.id.pre) {
+                // Handle the camera action
+            } else if (id == R.id.ayu) {
 
-        } else if (id == R.id.nav_slideshow) {
+            } else if (id == R.id.spot) {
 
-        } else if (id == R.id.nav_manage) {
+            } else if (id == R.id.Fit) {
 
-        } else if (id == R.id.nav_share) {
+            } else if (id == R.id.home) {
 
-        } else if (id == R.id.nav_send) {
+            } else if (id == R.id.up) {
 
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

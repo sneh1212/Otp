@@ -3,4 +3,7 @@
     <color name="colorPrimary">#00e5ff</color>
     <color name="colorPrimaryDark">#00e5ff</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="overlayBackground">#7f333639</color>
+    <color name="overlayActionBar">#0e0d0e</color>
+
 </resources>
