@@ -18,7 +18,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        spinner = findViewById(R.id.spinnerCountries);
+       spinner = findViewById(R.id.spinnerCountries);
         spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, CountryData.countryNames));
 
         editText = findViewById(R.id.editTextPhone);
@@ -26,7 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
         findViewById(R.id.buttonContinue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String code = CountryData.countryAreaCodes[spinner.getSelectedItemPosition()];
+               String code = CountryData.countryAreaCodes[spinner.getSelectedItemPosition()];
 
                 String number = editText.getText().toString().trim();
 
