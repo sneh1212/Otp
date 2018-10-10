@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -14,51 +15,90 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
-private  Button btn;
+
+     private  Button btnsignin,btnsignup;
+     private EditText number,pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-         btn=findViewById(R.id.signup);
-       mAuth = FirebaseAuth.getInstance();
-       nextpage();
+         btnsignin=findViewById(R.id.buttonSignin);
+         btnsignup = findViewById(R.id.signup);
+
+         number = findViewById(R.id.edtmobileno);
+         pass = findViewById(R.id.editTextPassword);
+
+         btnsignup.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 startActivity(new Intent(MainActivity.this,RegisterActivity.class
+                 ));
+             }
+         });
+
+         // here i am fetching the information from database
+
+        final FirebaseDatabase database =FirebaseDatabase.getInstance();
+
+        final DatabaseReference databaseReference = database.getReference("Users");
+
+         btnsignin.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+
+                 databaseReference.addValueEventListener(new ValueEventListener() {
+                     @Override
+                     public void onDataChange(DataSnapshot dataSnapshot) {
+
+                         // if data not exists in database
+
+                         if(dataSnapshot.child(number.getText().toString()).exists()) {
+
+
+                             // here we taking the user information
+
+                             User user = dataSnapshot.child(number.getText().toString()).getValue(User.class);
+
+
+                             if (user.getPassword().equals(pass.getText().toString())) {
+                                 Toast.makeText(MainActivity.this, "valid user", Toast.LENGTH_SHORT).show();
+
+                                     //Intent intent = new Intent(MainActivity.this,menu.class);
+                                     //startActivity(intent);
+                                 } else {
+                                     Toast.makeText(MainActivity.this, "Invalid user", Toast.LENGTH_SHORT).show();
+                                 }
+                         }
+
+                         else
+                         {
+                             Toast.makeText(MainActivity.this, "user not exists", Toast.LENGTH_SHORT).show();
+                         }
+
+                     }
+
+                     @Override
+                     public void onCancelled(DatabaseError databaseError) {
+
+                     }
+                 });
+
+
+
+             }
+         });
+
     }
 
-    private void nextpage() {
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,RegisterActivity.class));
-            }
-        });
-    }
-
-    private void login (String mobile){
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(null,mobile);
-        signInWithCredential(credential);
-    }
-
-    private void signInWithCredential(PhoneAuthCredential credential) {
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                            Intent intent = new Intent(MainActivity.this, UserInfoActivity.class);
 
 
-                            startActivity(intent);
 
-                        } else {
-                           // Toast.makeText(OtpActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                });
-    }
 }
