@@ -69,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                              if (user.getPassword().equals(pass.getText().toString())) {
-                                 Toast.makeText(MainActivity.this, "valid user", Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(MainActivity.this, "valid user", Toast.LENGTH_SHORT).show();
 
-                                     //Intent intent = new Intent(MainActivity.this,menu.class);
-                                     //startActivity(intent);
+                                     Intent intent = new Intent(MainActivity.this,menu.class);
+                                     startActivity(intent);
                                  } else {
                                      Toast.makeText(MainActivity.this, "Invalid user", Toast.LENGTH_SHORT).show();
                                  }
