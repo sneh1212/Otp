@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.medipack.otp.Common.Common;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                                 // Toast.makeText(MainActivity.this, "valid user", Toast.LENGTH_SHORT).show();
 
                                      Intent intent = new Intent(MainActivity.this,menu.class);
+                                     Common.currentUser = user;
                                      startActivity(intent);
                                  } else {
                                      Toast.makeText(MainActivity.this, "Invalid user", Toast.LENGTH_SHORT).show();
