@@ -38,6 +38,8 @@ public class menu extends AppCompatActivity
     RecyclerView recycler_menu;
     RecyclerView.LayoutManager layoutManager;
 
+    FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +90,7 @@ public class menu extends AppCompatActivity
 
     private void loadMenu() {
 
-        FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class,R.layout.menu_item,MenuViewHolder.class,category) {
+        adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class,R.layout.menu_item,MenuViewHolder.class,category) {
             @Override
             protected void populateViewHolder(MenuViewHolder viewHolder, Category model, int position) {
 
@@ -101,7 +103,13 @@ public class menu extends AppCompatActivity
                     @Override
                     public Void onClick(View view, int position, boolean isLongClick) {
 
-                        Toast.makeText(menu.this, ""+clickItem.getName(), Toast.LENGTH_SHORT).show();
+                        // get category id and send to new action
+
+                        Intent foodList = new Intent(menu.this,FoodList.class);
+
+                        //because category id is key so we just get key of the item
+                        foodList.putExtra("CategoryId",adapter.getRef(position).getKey());
+                        startActivity(foodList);
                         return null;
                     }
                 });
