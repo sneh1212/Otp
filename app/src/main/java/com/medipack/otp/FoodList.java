@@ -1,5 +1,6 @@
 package com.medipack.otp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -66,7 +67,11 @@ public class FoodList extends AppCompatActivity {
                     @Override
                     public Void onClick(View view, int position, boolean isLongClick) {
 
-                        Toast.makeText(FoodList.this, ""+loacal.getName(), Toast.LENGTH_SHORT).show();
+                        // start new activity
+
+                        Intent fooddetail = new Intent(FoodList.this,FoodDetail.class);
+                        fooddetail.putExtra("FoodId",adapter.getRef(position).getKey());// send food id to new activity
+                        startActivity(fooddetail);
                         return null;
                     }
                 });
