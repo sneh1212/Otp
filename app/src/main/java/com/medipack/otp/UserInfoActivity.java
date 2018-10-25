@@ -14,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class UserInfoActivity extends AppCompatActivity {
 
 
-    private EditText edtfn,Email,Password;
+    private EditText edtfn,Email,Password,Phone;
     private Button btn;
     DatabaseReference databaseReference;
 
@@ -28,6 +28,7 @@ public class UserInfoActivity extends AppCompatActivity {
         edtfn = findViewById(R.id.editText);
         Email = findViewById(R.id.editTextemail);
         Password = findViewById(R.id.editTextpass);
+        Phone = findViewById(R.id.userInfomobileno);
 
         btn = findViewById(R.id.buttonsubmit1);
 
@@ -36,9 +37,18 @@ public class UserInfoActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+// changed by sneh
 
-                startActivity(new Intent(UserInfoActivity.this,menu.class));
+                Intent intent = new Intent(UserInfoActivity.this,menu.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+
+                // startActivity(new Intent(UserInfoActivity.this,menu.class));
                 regis();
+
+
+
             }
         });
 
@@ -50,11 +60,12 @@ public class UserInfoActivity extends AppCompatActivity {
         String name = edtfn.getText().toString().trim();
        String email = Email.getText().toString().trim();
        String password = Password.getText().toString().trim();
+       String phone = Phone.getText().toString().trim();
        // String email = edtemail.getText().toString().trim();
         //String birthdate = edtdob.getText().toString().trim();
         //String ePass = edtepass.getText().toString().trim();
        // String cPass = edtcpass.getText().toString().trim();
-        User user = new User(name,email,password);
+        User user = new User(name,email,password,phone);
         databaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()).setValue(user);
     }
 }

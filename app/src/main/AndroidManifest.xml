@@ -25,7 +25,8 @@
         <activity android:name=".UserInfoActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".FoodList" />
-        <activity android:name=".FoodDetail"></activity>
+        <activity android:name=".FoodDetail" />
+        <activity android:name=".Cart"></activity>
     </application>
 
 </manifest>

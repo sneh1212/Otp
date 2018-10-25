@@ -67,14 +67,17 @@ public class MainActivity extends AppCompatActivity {
                              // here we taking the user information
 
                              User user = dataSnapshot.child(number.getText().toString()).getValue(User.class);
+                             user.setPhone(number.getText().toString());  // set phone number
 
 
                              if (user.getPassword().equals(pass.getText().toString())) {
                                 // Toast.makeText(MainActivity.this, "valid user", Toast.LENGTH_SHORT).show();
 
                                      Intent intent = new Intent(MainActivity.this,menu.class);
+                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                      Common.currentUser = user;
                                      startActivity(intent);
+                                     finish();
                                  } else {
                                      Toast.makeText(MainActivity.this, "Invalid user", Toast.LENGTH_SHORT).show();
                                  }
