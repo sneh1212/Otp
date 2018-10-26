@@ -1,16 +1,24 @@
 package com.medipack.otp;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.medipack.otp.Common.Common;
 import com.medipack.otp.Database.Database;
 import com.medipack.otp.Model.Order;
+import com.medipack.otp.Model.Request;
 import com.medipack.otp.ViewHolder.CartAdapter;
 
 import java.text.NumberFormat;
@@ -24,7 +32,7 @@ public class Cart extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
 
     FirebaseDatabase database;
-    DatabaseReference request;
+    DatabaseReference requests;
 
     TextView txtTotalPrice;
     Button btnPlace;
@@ -40,7 +48,7 @@ public class Cart extends AppCompatActivity {
 
         // Firebase
         database = FirebaseDatabase.getInstance();
-        request = database.getReference("Requests");
+        requests = database.getReference("Requests");
 
         //init
 
@@ -53,8 +61,71 @@ public class Cart extends AppCompatActivity {
         txtTotalPrice = (TextView)findViewById(R.id.total);
         btnPlace = (Button)findViewById(R.id.btnPlaceorder);
 
+        btnPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+              showAlertDialog();
+
+            }
+        });
+
         loadListFood();
 
+    }
+
+    private void showAlertDialog() {
+        AlertDialog.Builder aleartDialog = new AlertDialog.Builder(Cart.this);
+        aleartDialog.setTitle("One more step!");
+        aleartDialog.setMessage("Enter Your address: ");
+
+        final EditText edtAddress = new EditText(Cart.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+
+        );
+
+        edtAddress.setLayoutParams(lp);
+        aleartDialog.setView(edtAddress); // ADD EDIT TEXT TO ALERT DIALOG
+        aleartDialog.setIcon(R.drawable.cart);
+
+        aleartDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                // CREATE A NEW REQUEST OF ORDER
+                Request request = new Request(
+                        Common.currentUser.getPhone(),
+                        Common.currentUser.getName(),
+                        edtAddress.getText().toString(),
+                        txtTotalPrice.getText().toString(),
+                        cart
+
+                );
+
+                // SUBMIT TO FIREBASE
+                // :) USING SYSTEM.CURRENTMILLI TO KEY
+                 requests.child(String.valueOf(System.currentTimeMillis()))
+                         .setValue(request);
+                 //Delete cart
+                new Database(getBaseContext()).cleanCart();
+                Toast.makeText(Cart.this, "Thank you , Order Place", Toast.LENGTH_SHORT).show();
+                finish();
+
+
+            }
+        });
+
+        aleartDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+
+        aleartDialog.show();
     }
 
     private void loadListFood() {
